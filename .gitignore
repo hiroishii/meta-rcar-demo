@@ -4,4 +4,4 @@
 /prebuilt_gsx
 /proprietary/*.zip
 /renesas-bsp-rom-writer*
-
+/common_data

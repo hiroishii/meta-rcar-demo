@@ -72,6 +72,9 @@ chmod a+x ./repo
 export PATH=$PWD:$PATH
 cat ../demo.yaml >> prod-devel-rcar-virtio.yaml
 
+# set sstate/downloads directory much global as we can reuse it after removing meta-xt-prod-devel-rcar directory
+sed -i -e 's!\${TOPDIR}\/\.\.\/common_data\/sstate!\${TOPDIR}\/\.\.\/\.\./\.\.\/common_data\/sstate!g' prod-devel-rcar-virtio.yaml
+sed -i -e 's!\${TOPDIR}\/\.\.\/common_data\/downloads!\${TOPDIR}\/\.\.\/\.\./\.\.\/common_data\/downloads!g' prod-devel-rcar-virtio.yaml
 
 moulin prod-devel-rcar-virtio.yaml \
     --MACHINE $1 \
@@ -84,8 +87,8 @@ sed -i -e "s/conf\ =\ /conf\ =\ \'INHERIT\ \+\=\ \"rm_work\"\'\ /g" build.ninja
 
 # Cleanup build directory
 rm -rf firmware
-find yocto/common_data/sstate | grep xen: | xargs rm -r
-find yocto/common_data/sstate | grep arm-trusted-firmware: | xargs rm -r
+find ../common_data/sstate | grep xen: | xargs rm -r
+find ../common_data/sstate | grep arm-trusted-firmware: | xargs rm -r
 
 ninja
 ninja full.img.gz
