@@ -79,6 +79,9 @@ moulin prod-devel-rcar-virtio.yaml \
     --ENABLE_DOMU no \
     --GRAPHICS binaries \
 
+# workaround: Modify build.ninja to inherit rm_work, since moulin seems not to be able to handle "+=" syntax
+sed -i -e "s/conf\ =\ /conf\ =\ \'INHERIT\ \+\=\ \"rm_work\"\'\ /g" build.ninja
+
 # Cleanup build directory
 rm -rf firmware
 find yocto/common_data/sstate | grep xen: | xargs rm -r
